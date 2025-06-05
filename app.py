@@ -7,13 +7,16 @@ import docx
 import re
 
 # --- API Key Configuration ---
-GROQ_API_KEY = "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"
+GROQ_API_KEY = st.secrets.get("GROQ_API_API_KEY")
 
-if not GROQ_API_KEY or GROQ_API_KEY == "YOUR_GROQ_API_KEY":
-    st.error("Please replace 'YOUR_GROQ_API_KEY' with your actual Groq API key in the code or use Streamlit secrets.")
+if not GROQ_API_KEY:
+    st.error("Groq API key not found. Please configure it in Streamlit secrets.")
+    st.info("For Streamlit Cloud: Go to 'Secrets' in your app settings and add `GROQ_API_API_KEY = \"your_key_here\"`.")
+    st.info("For local development: Create `.streamlit/secrets.toml` and add `GROQ_API_API_KEY = \"your_key_here\"` (and add `.streamlit/secrets.toml` to `.gitignore`).")
     st.stop()
 else:
     client = Groq(api_key=GROQ_API_KEY)
+
 
 # Initialize session state variables
 if 'cv_analysis' not in st.session_state:
